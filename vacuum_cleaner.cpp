@@ -52,7 +52,7 @@ public:
     int newY = pos.second + y;
 
     // Disregard if movement is into an obstacle or out of bounds
-    if (newX >= 0 && newX < 4 && newY >= 0 && newY < 4 && room[newX][newY] != 0)
+    if (newX >= 0 && newX < 16 && newY >= 0 && newY < 16 && room[newX][newY] != 0)
     {
       pos = {newX, newY};
       return true;
@@ -63,12 +63,12 @@ public:
 
   void turnLeft() override
   {
-    dir = (dir + 3) % 4; // Bounds check
+    dir = (dir + 3) % 16; // Bounds check
   }
 
   void turnRight() override
   {
-    dir = (dir + 1) % 4; // Bounds check
+    dir = (dir + 1) % 16; // Bounds check
   }
 
   void clean() override
@@ -95,9 +95,9 @@ public:
   static void printRoom(int **room, std::pair<int, int> robotPos, int robotDirection)
   {
     system("clear");
-    for (int i = 0; i < 4; i++)
+    for (int i = 0; i < 16; i++)
     {
-      for (int j = 0; j < 4; j++)
+      for (int j = 0; j < 16; j++)
       {
         if (i == robotPos.first && j == robotPos.second)
         {
@@ -144,7 +144,7 @@ public:
 
   void cleanRoom(RobotCreate &bot, int **room)
   {
-    dfs(bot, 0, 0, 0, room);
+    dfs(bot, bot.getPos().first, bot.getPos().second, 0, room);
   }
 
   void dfs(RobotCreate &bot, int i, int j, int dir, int **room)
@@ -155,7 +155,7 @@ public:
     printRoom(room, bot.getPos(), bot.getDirection());
 
     // Attempt to move in all directions
-    for (int n = 0; n < 4; n++)
+    for (int n = 0; n < 16; n++)
     {
       if (bot.move())
       {
@@ -175,23 +175,23 @@ public:
       }
       // Rotate 90 degrees
       bot.turnRight();
-      dir = (dir + 1) % 4;
+      dir = (dir + 1) % 16;
     }
   }
 };
 
 int main()
 {
-  int **room = new int *[4];
-  for (int i = 0; i < 4; i++)
+  int **room = new int *[16];
+  for (int i = 0; i < 16; i++)
   {
-    room[i] = new int[4];
+    room[i] = new int[16];
   }
 
   // Initialize the room with obstacles
-  for (int i = 0; i < 4; i++)
+  for (int i = 0; i < 16; i++)
   {
-    for (int j = 0; j < 4; j++)
+    for (int j = 0; j < 16; j++)
     {
       room[i][j] = 1; // 1: path
     }
@@ -203,8 +203,29 @@ int main()
   room[1][2] = 0; // 0: obstacle
   room[2][2] = 0; // 0: obstacle
 
+  for (int i = 0; i < 16; i++)
+  {
+    room[7][i] = 0; // Room boundary
+    room[i][7] = 0;
+  }
+
+  room[7][6] = 1;
+  room[7][7] = 1;
+  room[7][8] = 1;
+  room[6][7] = 1;
+  room[7][7] = 1;
+  room[8][7] = 1;
+
+  for (int i = 8; i < 16; i++)
+  {
+    for (int j = 8; j < 16; j++)
+    {
+      room[i][j] = 2;
+    }
+  }
+
   // Initial robot start coordinate
-  std::pair<int, int> pos = {1, 1};
+  std::pair<int, int> pos = {7, 7};
   RobotCreate bot(room, pos);
 
   // Show the room before starting
@@ -218,7 +239,7 @@ int main()
   roomCleaner.cleanRoom(bot, room);
 
   // Deallocate memory for the room
-  for (int i = 0; i < 4; i++)
+  for (int i = 0; i < 16; i++)
   {
     delete[] room[i];
   }
