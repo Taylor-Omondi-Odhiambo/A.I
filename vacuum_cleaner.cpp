@@ -5,6 +5,7 @@
 #include <chrono>
 
 // Class implimentation for the vacuum
+int r = 0;
 class Robot
 {
 public:
@@ -63,12 +64,12 @@ public:
 
   void turnLeft() override
   {
-    dir = (dir + 3) % 16; // Bounds check
+    dir = (dir + 3) % 4; // Bounds check
   }
 
   void turnRight() override
   {
-    dir = (dir + 1) % 16; // Bounds check
+    dir = (dir + 1) % 4; // Bounds check
   }
 
   void clean() override
@@ -154,8 +155,13 @@ public:
     room[i][j] = 2;
     printRoom(room, bot.getPos(), bot.getDirection());
 
+    if (j == 0 && i == 14)
+    {
+      r++;
+    }
+
     // Attempt to move in all directions
-    for (int n = 0; n < 16; n++)
+    for (int n = 0; n < 4; n++)
     {
       if (bot.move())
       {
@@ -175,7 +181,7 @@ public:
       }
       // Rotate 90 degrees
       bot.turnRight();
-      dir = (dir + 1) % 16;
+      dir = (dir + 1) % 4;
     }
   }
 };
@@ -198,10 +204,35 @@ int main()
   }
 
   // Adding obstacles
+  // Room 1
+  room[0][0] = 0; // 0: obstacle
+  room[3][3] = 0; // 0: obstacle
+  room[0][3] = 0; // 0: obstacle
   room[0][1] = 0; // 0: obstacle
   room[0][2] = 0; // 0: obstacle
   room[1][2] = 0; // 0: obstacle
   room[2][2] = 0; // 0: obstacle
+
+  // Room 2
+  int k = 9;
+  for (int i = 1; i < 5; i++)
+  {
+    int j = k;
+    while (j < k + 3)
+    {
+      room[i][j] = 0; // 0: obstacle
+      j++;
+    }
+    k++;
+  }
+
+  for (int i = 9; i < 15; i++)
+  {
+    for (int j = 2; j < 5; j++)
+    {
+      room[i][j] = 0; // 0: obstacle
+    }
+  }
 
   for (int i = 0; i < 16; i++)
   {
@@ -230,7 +261,7 @@ int main()
 
   // Show the room before starting
   RoomCleaner::printRoom(room, bot.getPos(), bot.getDirection());
-  std::this_thread::sleep_for(std::chrono::seconds(2)); // Sleep for 2s before starting
+  //  std::this_thread::sleep_for(std::chrono::seconds(0.5)); // Sleep for 2s before starting
 
   // Clean the room
   // Step 1: Clean the index the bot starts at
