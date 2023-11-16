@@ -95,7 +95,7 @@ public:
   // Prints the room state
   static void printRoom(int **room, std::pair<int, int> robotPos, int robotDirection)
   {
-    system("clear");
+    system("cls");
     for (int i = 0; i < 16; i++)
     {
       for (int j = 0; j < 16; j++)
@@ -140,7 +140,7 @@ public:
     }
 
     // Sleep to visualize the steps
-    std::this_thread::sleep_for(std::chrono::seconds(1));
+    // std::this_thread::sleep_for(std::chrono::seconds(1));
   }
 
   void cleanRoom(RobotCreate &bot, int **room)
@@ -205,34 +205,34 @@ int main()
 
   // Adding obstacles
   // Room 1
-  room[0][0] = 0; // 0: obstacle
-  room[3][3] = 0; // 0: obstacle
-  room[0][3] = 0; // 0: obstacle
-  room[0][1] = 0; // 0: obstacle
-  room[0][2] = 0; // 0: obstacle
-  room[1][2] = 0; // 0: obstacle
-  room[2][2] = 0; // 0: obstacle
+  // room[0][0] = 0; // 0: obstacle
+  // room[3][3] = 0; // 0: obstacle
+  // room[0][3] = 0; // 0: obstacle
+  // room[0][1] = 0; // 0: obstacle
+  // room[0][2] = 0; // 0: obstacle
+  // room[1][2] = 0; // 0: obstacle
+  // room[2][2] = 0; // 0: obstacle
 
   // Room 2
-  int k = 9;
-  for (int i = 1; i < 5; i++)
-  {
-    int j = k;
-    while (j < k + 3)
-    {
-      room[i][j] = 0; // 0: obstacle
-      j++;
-    }
-    k++;
-  }
+  // int k = 9;
+  // for (int i = 1; i < 5; i++)
+  // {
+    // int j = k;
+    // while (j < k + 3)
+    // {
+      // room[i][j] = 0; // 0: obstacle
+      // j++;
+    // }
+    // k++;
+  // }
 
-  for (int i = 9; i < 15; i++)
-  {
-    for (int j = 2; j < 5; j++)
-    {
-      room[i][j] = 0; // 0: obstacle
-    }
-  }
+  // for (int i = 9; i < 15; i++)
+  // {
+    // for (int j = 2; j < 5; j++)
+    // {
+      // room[i][j] = 0; // 0: obstacle
+    // }
+  // }
 
   for (int i = 0; i < 16; i++)
   {
